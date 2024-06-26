@@ -1,12 +1,18 @@
+import os
+from dotenv import load_dotenv
 from litellmParser import *
 from transformers import AutoTokenizer
 
-models = ["mistralai/Mistral-7B-Instruct-v0.1", "cognitivecomputations/dolphin-2.6-mistral-7b", "HuggingFaceH4/zephyr-7b-beta"]
+load_dotenv()
+models = ["turboderp/Cat-Llama-3-70B-instruct", "MarsupialAI/HelloNurse-11b","Sao10K/Llama-3-8B-Expr1-Stheno-3.2","mistralai/Mistral-7B-Instruct-v0.1", "cognitivecomputations/dolphin-2.6-mistral-7b", "HuggingFaceH4/zephyr-7b-beta"]
 # Path to the local configuration file
 model = models[0]
+access_token = os.getenv("HUGGING_FACE_HUB_TOKEN")
+
+
 # Load the tokenizer from the local configuration file
-tokenizer = AutoTokenizer.from_pretrained(model)
-#
+tokenizer = AutoTokenizer.from_pretrained(model, use_auth_token=access_token, trust_remote_code=True)
+
 # # Define the chat array
 chat = [
     {"role": "user", "content": "Hello, how are you?"},

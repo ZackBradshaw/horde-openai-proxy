@@ -64,6 +64,15 @@ class OpenAICompletionResponse(BaseModel):
 
 
 
+"""OPEN AI IMAGE GENERATION MODELS"""
+class OpenAIImageGenerationRequest(BaseModel):
+    prompt: str
+    n: int = Field(default=1)
+    size: str = Field(default="1024x1024")
+    response_format: str = Field(default="url")
+    user: Optional[str] = Field(default=None)
+
+
 """KOBOLD AI RELATED MODELS"""
 class Params(BaseModel):
     max_context_length: int
@@ -105,3 +114,4 @@ class KoboldAIPollResponse(BaseModel):
 class KoboldAIAsyncResponse(BaseModel):
     id: str
     message: str
+
