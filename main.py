@@ -1,3 +1,4 @@
+import random
 from fastapi import FastAPI, HTTPException, Header
 from fastapi.openapi.models import Response
 from starlette.responses import JSONResponse
@@ -19,15 +20,37 @@ textgen_url = base_url + "/api/v2/generate/text/"
 horde_api_key = os.getenv("HORDE_API_KEY")
 horde_base_url = os.getenv("HORDE_BASE_URL")
 horde_image_gen_url = f"{horde_base_url}{os.getenv('HORDE_IMAGE_GEN_URL')}"
-
-@app.get("/health")
-async def health():
-    return {"status": "OK"}
+   
+def generate_spoofed_models(num_models=1):
+    spoofed_models = []
+    for _ in range(num_models):
+        model_id = os.getenv("MODEL") 
+        created_timestamp = int(time.time())
+        owned_by = random.choice(["organization-owner", "openai", "another-owner"])
+        
+        model = {
+            "id": model_id,
+            "object": "model",
+            "created": created_timestamp,
+            "owned_by": owned_by
+        }
+        spoofed_models.append(model)
+    
+    return spoofed_models
 
 @app.get("/v1/models")
 async def show_available_models():
-    models = os.getenv("MODEL")
-    return JSONResponse(content=models)
+    # Generate spoofed data for models
+    spoofed_models = generate_spoofed_models()
+
+    # Structure the response
+    response_content = {
+        "object": "list",
+        "data": spoofed_models
+    }
+
+    return JSONResponse(content=response_content)
+
 
 @app.post("/v1/chat/completions")
 async def chat_handler(

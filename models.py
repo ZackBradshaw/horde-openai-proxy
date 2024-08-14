@@ -40,7 +40,7 @@ class OpenAIChatResponse(BaseModel):
 class OpenAICompletionRequest(BaseModel):
     model: str
     prompt: Union[str, List[str]] = Field(..., description="Prompt string or array")
-    max_tokens: int = Field(default=128)
+    max_tokens: int = Field(default=8000)
     temperature: float = Field(default=0.8)
     top_p: float = Field(default=0.9)
     n: int = Field(default=1)
